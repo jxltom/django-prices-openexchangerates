@@ -178,3 +178,17 @@ CURRENCIES = [
     ('ZMW', _('Zambian Kwacha')),
     ('ZWL', _('Zimbabwean Dollar'))
 ]
+
+
+def get_currencies():
+    import requests
+
+    content = requests.get('http://openexchangerates.org/currencies.json').json()
+    currencies = list()
+    for currency, description in content.items():
+        currencies.append("    ('{}', _('{}')),".format(currency, description))
+    return '\n'.join(currencies)
+
+
+if __name__ == '__main__':
+    print(get_currencies())
