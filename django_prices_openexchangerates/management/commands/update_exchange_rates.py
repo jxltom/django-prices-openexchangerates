@@ -18,5 +18,12 @@ class Command(BaseCommand):
             all_rates = create_conversion_dates()
         else:
             all_rates = update_conversion_rates()
+
+        verbosity, count = options['verbosity'], 0
         for conversion_rate in all_rates:
-            self.stdout.write('%s' % (conversion_rate, ))
+            count += 1
+            if verbosity >= 1:
+                self.stdout.write('%s' % (conversion_rate, ))
+
+        self.stdout.write(
+            'Exchange rates for %s currencies are created or updated.' % (count,))
