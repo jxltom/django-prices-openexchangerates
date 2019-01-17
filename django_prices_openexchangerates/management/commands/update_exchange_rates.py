@@ -14,7 +14,8 @@ class Command(BaseCommand):
             help='Create entries for all currencies')
 
     def handle(self, *args, **options):
-        if options['all_currencies']:
+        all_currencies = options['all_currencies']
+        if all_currencies:
             all_rates = create_conversion_dates()
         else:
             all_rates = update_conversion_rates()
@@ -25,5 +26,6 @@ class Command(BaseCommand):
             if verbosity >= 1:
                 self.stdout.write('%s' % (conversion_rate, ))
 
-        self.stdout.write(
-            'Exchange rates for %s currencies are created or updated.' % (count,))
+        status = 'created or updated' if all_currencies else 'updated'
+        message = 'Exchange rates for %s currencies are %s.' % (count, status)
+        self.stdout.write(message)
